@@ -1,4 +1,5 @@
-import Image from "next/image";
+import Clock from "./components/clock-component/clock";
+
 
 export default function Home() {
   return (
@@ -7,12 +8,8 @@ export default function Home() {
         <h1>Pomowise</h1>
         <hr></hr>
       </div>
-      <div>
-        25:00
-      </div>
-      <div>
-        Start
-      </div>
+      <Clock />
     </main>
   );
 }
+

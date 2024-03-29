@@ -6,17 +6,31 @@ import { ComponentProps } from "react";
 import "./clock.css";
 
 const Clock = ({}: ComponentProps<"div">) => {
-    const [timeLeft, setTimeLeft] = useState(1500);
+    const durations = [25 * 60, 5 * 60, 15 * 60];
+    const sequence = [0, 1, 0, 1, 0, 1, 0, 2];
+  
+    const [sequenceIndex, setSequenceIndex] = useState(0);
+    const [currentStatusIndex, setCurrentStatusIndex] = useState(sequence[sequenceIndex]);
+    const [timeLeft, setTimeLeft] = useState(durations[currentStatusIndex]);
     const [isRunning, setIsRunning] = useState(false);
   
+    const nextStatus = () => {
+      setIsRunning(false);
+      setSequenceIndex((prevIndex) => (prevIndex + 1) % sequence.length);
+      const nextIndex = (sequenceIndex + 1) % sequence.length;
+      const nextStatusIndex = sequence[nextIndex];
+      setCurrentStatusIndex(nextStatusIndex);
+      setTimeLeft(durations[nextStatusIndex]);
+    };
+
     useEffect(() => {
       let timer: NodeJS.Timeout;
       if (isRunning && timeLeft > 0) {
         timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
         }, 1000);
-      } else {
-        setIsRunning(false);
+      } else if (timeLeft < 0){
+        nextStatus();
       }
   
       return () => clearTimeout(timer);
@@ -40,6 +54,11 @@ const Clock = ({}: ComponentProps<"div">) => {
 
     return (
         <div className="flex flex-col items-center clock-outside">
+            <div className="flex gap-8">
+              <span className={`clock-title ${currentStatusIndex === 0 ? 'active' : ''}`}>Focus</span>
+              <span className={`clock-title ${currentStatusIndex === 1 ? 'active' : ''}`}>Short Break</span>
+              <span className={`clock-title ${currentStatusIndex === 2 ? 'active' : ''}`}>Long Break</span>
+            </div>
             <div className="flex items-center space-x-2 clock-background">
                 <div className="flex flex-col justify-center items-center clock-container">
                     <span className="text-8xl">{minutes < 10 ? `0${minutes}` : minutes}</span>
@@ -56,7 +75,7 @@ const Clock = ({}: ComponentProps<"div">) => {
                 ) : (
                   <div className="flex">
                     <button className="clock-button" onClick={pauseTimer}>PAUSE</button>
-                    <button><SkipForward size={32} color="white" weight="bold"/></button>
+                    <button onClick={nextStatus}><SkipForward size={32} color="white" weight="bold"/></button>
                   </div>
                 )}
             </div>

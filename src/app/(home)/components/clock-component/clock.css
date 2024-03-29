@@ -30,3 +30,16 @@
     background-color: #F79039;
     border-radius: 10px;
   }
+
+
+  .clock-title {
+    padding: 8px;
+    background-color: #F79039;
+    border-radius: 10px;
+    color: white;
+    padding: 8px 32px;
+  }
+
+  .active {
+    background-color: #E77C21;
+  }

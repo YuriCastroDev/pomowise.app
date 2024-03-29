@@ -1,15 +1,16 @@
 'use client'
+import { SkipForward } from "@phosphor-icons/react";
 
 import { useState, useEffect } from "react";
 import { ComponentProps } from "react";
 import "./clock.css";
 
 const Clock = ({}: ComponentProps<"div">) => {
-    const [timeLeft, setTimeLeft] = useState(1500); // 25 minutos em segundos
+    const [timeLeft, setTimeLeft] = useState(1500);
     const [isRunning, setIsRunning] = useState(false);
   
     useEffect(() => {
-      let timer: NodeJS.Timeout; // Definindo o tipo explicitamente
+      let timer: NodeJS.Timeout;
       if (isRunning && timeLeft > 0) {
         timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
@@ -38,7 +39,7 @@ const Clock = ({}: ComponentProps<"div">) => {
     const { minutes, seconds } = formatTime(timeLeft);
 
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center clock-outside">
             <div className="flex items-center space-x-2 clock-background">
                 <div className="flex flex-col justify-center items-center clock-container">
                     <span className="text-8xl">{minutes < 10 ? `0${minutes}` : minutes}</span>
@@ -53,7 +54,10 @@ const Clock = ({}: ComponentProps<"div">) => {
                 {!isRunning ? (
                 <button className="clock-button" onClick={startTimer}>START</button>
                 ) : (
-                <button onClick={pauseTimer}>PAUSE</button>
+                  <div className="flex">
+                    <button className="clock-button" onClick={pauseTimer}>PAUSE</button>
+                    <button><SkipForward size={32} color="white" weight="bold"/></button>
+                  </div>
                 )}
             </div>
         </div>

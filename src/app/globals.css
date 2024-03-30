@@ -17,7 +17,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, hsla(195, 53%, 79%, 1) 0%, hsla(18, 16%, 53%, 1) 100%) !important
+  background: #74C69D !important
 }
 
 @layer utilities {

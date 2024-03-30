@@ -7,6 +7,21 @@
    box-shadow: 8px 9px 22px 1px rgba(0, 0, 0, 0.6);
   }
 
+
+  .statuses-gap {
+    gap: 2rem;
+  }
+
+  .minutes-seconds-number {
+    font-size: 6rem;
+    line-height: 1;
+  }
+
+  .minutes-seconds-text {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
   .clock-background {
     padding: 35px;
     background-color: #F79039;
@@ -42,4 +57,44 @@
 
   .active {
     background-color: #E77C21;
+  }
+
+  @media screen and (max-width: 700px) {
+    .clock-container {
+      width: 100px;
+      height: 100px;
+    }
+
+    .statuses-gap {
+      gap: 0.5rem;
+    }
+
+    .minutes-seconds-number {
+      font-size: 3rem;
+      line-height: 1;
+    }
+  
+    .minutes-seconds-text {
+      font-size: 1rem;
+      line-height: 1;
+    }
+  
+    .clock-background {
+      padding: 20px;
+      gap: 20px;
+    }
+  
+    .clock-button {
+      padding: 12px 24px;
+      font-size: 1.2rem;
+    }
+  
+    .clock-outside {
+      padding: 20px;
+    }
+  
+    .clock-title {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
   }

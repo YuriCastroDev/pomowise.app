@@ -29,7 +29,7 @@ const Clock = ({}: ComponentProps<"div">) => {
         timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
         }, 1000);
-      } else if (timeLeft < 0){
+      } else if (timeLeft <= 0){
         nextStatus();
       }
   
@@ -54,19 +54,19 @@ const Clock = ({}: ComponentProps<"div">) => {
 
     return (
         <div className="flex flex-col items-center clock-outside">
-            <div className="flex gap-8">
+            <div className="flex statuses-gap">
               <span className={`clock-title ${currentStatusIndex === 0 ? 'active' : ''}`}>Focus</span>
               <span className={`clock-title ${currentStatusIndex === 1 ? 'active' : ''}`}>Short Break</span>
               <span className={`clock-title ${currentStatusIndex === 2 ? 'active' : ''}`}>Long Break</span>
             </div>
             <div className="flex items-center space-x-2 clock-background">
                 <div className="flex flex-col justify-center items-center clock-container">
-                    <span className="text-8xl">{minutes < 10 ? `0${minutes}` : minutes}</span>
-                    <span className="text-2xl">Minutes</span>
+                    <span className="minutes-seconds-number">{minutes < 10 ? `0${minutes}` : minutes}</span>
+                    <span className="minutes-seconds-text">Minutes</span>
                 </div>
                 <div className="flex flex-col justify-center items-center clock-container">
-                    <span className="text-8xl">{seconds < 10 ? `0${seconds}` : seconds}</span>
-                    <span className="text-2xl">Seconds</span>
+                    <span className="minutes-seconds-number">{seconds < 10 ? `0${seconds}` : seconds}</span>
+                    <span className="minutes-seconds-text">Seconds</span>
                 </div>
             </div>
             <div>

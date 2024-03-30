@@ -69,16 +69,14 @@ const Clock = ({}: ComponentProps<"div">) => {
                     <span className="minutes-seconds-text">Seconds</span>
                 </div>
             </div>
-            <div>
                 {!isRunning ? (
                 <button className="clock-button" onClick={startTimer}>START</button>
                 ) : (
-                  <div className="flex">
-                    <button className="clock-button" onClick={pauseTimer}>PAUSE</button>
+                  <div className="flex gap-8">
+                    <button className="clock-button ml-16" onClick={pauseTimer}>PAUSE</button>
                     <button onClick={nextStatus}><SkipForward size={32} color="white" weight="bold"/></button>
                   </div>
                 )}
-            </div>
         </div>
     );
 };

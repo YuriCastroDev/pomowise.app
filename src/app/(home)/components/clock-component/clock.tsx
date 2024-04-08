@@ -23,16 +23,24 @@ const Clock = ({}: ComponentProps<"div">) => {
       setTimeLeft(durations[nextStatusIndex]);
     };
 
+    const playAlarmSong = () => {
+      const alarmAudio = new Audio("/alarm_clock.mp3");
+      alarmAudio.play();
+    };
+
     useEffect(() => {
       let timer: NodeJS.Timeout;
       if (isRunning && timeLeft > 0) {
         timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
         }, 1000);
-      } else if (timeLeft <= 0){
+      } else if (timeLeft <= 0) {
+        playAlarmSong();
         nextStatus();
       }
-  
+
+      document.title = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} - ${currentStatusIndex === 0 ? 'Focus' : currentStatusIndex === 1 ? 'Short Break' : 'Long Break'}`;
+
       return () => clearTimeout(timer);
     }, [isRunning, timeLeft]);
   

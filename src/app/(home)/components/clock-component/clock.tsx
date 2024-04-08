@@ -6,7 +6,7 @@ import { ComponentProps } from "react";
 import "./clock.css";
 
 const Clock = ({}: ComponentProps<"div">) => {
-    const durations = [0.1 * 60, 5 * 60, 15 * 60];
+    const durations = [25 * 60, 5 * 60, 15 * 60];
     const sequence = [0, 1, 0, 1, 0, 1, 0, 2];
   
     const [sequenceIndex, setSequenceIndex] = useState(0);

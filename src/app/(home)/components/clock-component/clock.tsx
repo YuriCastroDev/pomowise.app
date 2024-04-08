@@ -6,7 +6,7 @@ import { ComponentProps } from "react";
 import "./clock.css";
 
 const Clock = ({}: ComponentProps<"div">) => {
-    const durations = [25 * 60, 5 * 60, 15 * 60];
+    const durations = [0.1 * 60, 5 * 60, 15 * 60];
     const sequence = [0, 1, 0, 1, 0, 1, 0, 2];
   
     const [sequenceIndex, setSequenceIndex] = useState(0);
@@ -23,21 +23,41 @@ const Clock = ({}: ComponentProps<"div">) => {
       setTimeLeft(durations[nextStatusIndex]);
     };
 
+    const playAlarmSong = () => {
+      const alarmAudio = new Audio("/alarm_clock.mp3");
+      alarmAudio.play();
+    };
+
+    const requestNotificationPermission = () => {
+      if (Notification.permission !== "granted") {
+        Notification.requestPermission().then((permission) => {
+          if (permission === "granted") {
+            console.log("Notification permission granted.");
+          }
+        });
+      }
+    };
+
     useEffect(() => {
       let timer: NodeJS.Timeout;
       if (isRunning && timeLeft > 0) {
         timer = setTimeout(() => {
           setTimeLeft(timeLeft - 1);
         }, 1000);
-      } else if (timeLeft <= 0){
+      } else if (timeLeft <= 0) {
+        showNotification();
+        playAlarmSong();
         nextStatus();
       }
-  
+
+      document.title = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} - ${currentStatusIndex === 0 ? 'Focus' : currentStatusIndex === 1 ? 'Short Break' : 'Long Break'}`;
+
       return () => clearTimeout(timer);
     }, [isRunning, timeLeft]);
   
     const startTimer = () => {
       setIsRunning(true);
+      requestNotificationPermission();
     };
 
     const pauseTimer = () => {
@@ -49,6 +69,43 @@ const Clock = ({}: ComponentProps<"div">) => {
       const seconds = time % 60;
       return { minutes, seconds };
     };
+
+    const showNotification = () => {
+      let notificationTitle = '';
+      let notificationOptions = {};
+    
+      switch(currentStatusIndex) {
+        case 0:
+          notificationTitle = 'Focus Finalizado';
+          notificationOptions = {
+            body: 'Sua sessão de focus foi finalizada. Faça uma pausa!',
+          };
+          break;
+        case 1:
+          notificationTitle = 'Short Break Finalizado';
+          notificationOptions = {
+            body: 'Seu short break foi finalizado. Volte ao trabalho!',
+          };
+          break;
+        case 2:
+          notificationTitle = 'Long Break Finalizado';
+          notificationOptions = {
+            body: 'Seu long break foi finalizado. Volte ao trabalho!',
+          };
+          break;
+        default:
+          notificationTitle = 'Timer Finalizado';
+          notificationOptions = {
+            body: 'Seu timer foi finalizado!',
+          };
+      }
+
+      if (Notification.permission === "granted") {
+        new Notification(notificationTitle, notificationOptions);
+      } else if (Notification.permission !== "denied") {
+        requestNotificationPermission();
+      }
+    }
 
     const { minutes, seconds } = formatTime(timeLeft);
 
